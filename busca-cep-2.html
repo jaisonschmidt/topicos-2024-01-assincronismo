@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar CEP</title>
+</head>
+<body>
+    <form id="frmBuscaCep">
+        <label for="txtCep">Informe o CEP:</label>
+        <input type="text" id="txtCep" maxlength="8" placeholder="somente números">
+
+        <button type="submit">Buscar CEP</button>
+
+        <input type="text" id="txtCidade" disabled>
+        <input type="text" id="txtBairro" disabled>
+        <input type="text" id="txtLogradouro" disabled>       
+    </form>
+
+    <script>
+        // criamos uma referência para o CEP
+        const frmBuscaCep = document.getElementById('frmBuscaCep');
+        const txtCep = document.getElementById('txtCep');
+        const txtCidade = document.getElementById('txtCidade');
+        const txtBairro = document.getElementById('txtBairro');
+        const txtLogradouro = document.getElementById('txtLogradouro');
+
+        function exibeDadosCep(cepData) {
+            txtCidade.value = cepData.localidade;
+            txtBairro.value = cepData.bairro;
+            txtLogradouro.value = cepData.logradouro;
+        }
+
+        async function buscaCep(cep) {
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${txtCep.value}/json/`);
+                const cepData = await response.json();
+                exibeDadosCep(cepData);
+            } catch (error) {
+                console.log('Erro ao buscar CEP:', error);
+            }
+        }
+
+        function formEvent(e) {
+            e.preventDefault();
+
+            if(txtCep.value.length === 8) {
+                buscaCep(txtCep.value);
+            }
+        }
+
+        frmBuscaCep.addEventListener('submit', formEvent);
+        txtCep.addEventListener('keyup', formEvent)
+    </script>
+</body>
+</html>

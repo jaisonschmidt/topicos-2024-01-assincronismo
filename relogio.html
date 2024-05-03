@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relógio</title>
+
+    <style>
+        #elementoRelogio {
+            background-color: black;
+            border: 2px dotted chartreuse;
+            color: chartreuse;
+            font-size: 50px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="elementoRelogio"></h1>
+
+    <button id="pararRelogio">
+        Parar relógio
+    </button>
+
+    <script>
+        const elementoRelogio = document.getElementById('elementoRelogio'); 
+        const elementoBotaoPararRelogio = document.getElementById('pararRelogio');       
+        
+        function normalizaNumero(numero){
+            return numero < 10 ? '0' + numero : numero;
+        }
+        
+        function atualizaRelogio() {
+            const tempoAtual = new Date();
+            
+            elementoRelogio.textContent = normalizaNumero(tempoAtual.getHours()) + 
+                                        ':' + 
+                                        normalizaNumero(tempoAtual.getMinutes()) + 
+                                        ':' + 
+                                        normalizaNumero(tempoAtual.getSeconds());
+        }
+        
+        atualizaRelogio();
+        
+        const intervaloRelogio = setInterval(atualizaRelogio, 1000); // 1000 -> 1 segundo
+
+        elementoBotaoPararRelogio.addEventListener('click', function(){
+            clearInterval(intervaloRelogio);
+        });
+
+        setTimeout(function(){
+            alert('Parando o relógio automaticamente');
+            clearInterval(intervaloRelogio);
+        }, 10000); // 10000 = 10 segundos
+    </script>
+</body>
+</html>
